@@ -85,7 +85,7 @@ function findLargestAfterInstruction(input){
     
 }
 
-console.log(findLargestAfterInstruction(input))
+console.log('part 1: ', findLargestAfterInstruction(input)) //3880
 
 
     //pt 2
@@ -137,4 +137,4 @@ function findLargestDuringInstruction(input){
     
 }
 
-console.log(findLargestDuringInstruction(input))
+console.log('part 2: ', findLargestDuringInstruction(input)) //5035
