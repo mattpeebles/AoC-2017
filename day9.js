@@ -3,8 +3,6 @@
 let fs = require('fs');
 
 let input = fs.readFileSync('day9.txt').toString()
-let input2 = fs.readFileSync('../test.txt').toString()
-
 
     //pt 1
 function removeGarbage(input){
