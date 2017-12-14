@@ -171,3 +171,9 @@ console.log('Part 1: ', hash[0] * hash[1])
     console.log('   ',generateKnotHash(generateDenseHash(createSparseHashFromASCII(list, createLengthsASCIIString('1,2,3')))) === '3efbe78a8d82f29979031a4aa0b16a9d')
     console.log('   ',generateKnotHash(generateDenseHash(createSparseHashFromASCII(list, createLengthsASCIIString('1,2,4')))) === '63960835bcdc130f0b66d7ff4f6a5a8e')
 
+module.exports = {
+   knot: generateKnotHash,
+   dense: generateDenseHash,
+   sparse: createSparseHashFromASCII,
+   lengths: createLengthsASCIIString
+}
