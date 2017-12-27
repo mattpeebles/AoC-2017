@@ -178,4 +178,4 @@ fractal(start, 5, rulebook).forEach(row => {
     })
 })
 
-console.log(count)
+console.log(count) //answer should be 2536879
