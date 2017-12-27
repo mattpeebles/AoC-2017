@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 /*
---- Day 25: The Halting Problem ---
+        --- Day 25: The Halting Problem ---
 
     Following the twisty passageways deeper and deeper into the CPU, you finally reach the core of the computer. Here, in the expansive central chamber, you find a grand apparatus that fills the entire room, suspended nanometers above your head.
 
@@ -64,79 +64,101 @@ const fs = require('fs')
 
     Your puzzle answer was 4217.
 */
+
 function turingMachine(steps){
-    this.slot = 0
-    this.tape = []
-    this.state = 'A'
-    this.checksum = 0
-    this.count = steps
+    let cursorIndex = 0,
+        tape = [],
+        state = 'A',
+        count = steps;
 
-    this.write = (val) => {
-        this.checksum += val - (this.tape[this.slot] || 0)
-        this.tape[this.slot] = val
-    }
-    
-    this.run = () => {
-        while(this.count > 0){
-            
-            let current = this.tape[this.slot]
-            
-            switch(this.state){
-                case 'A':
-                    if(!current){
-                        this.write(1), this.slot++, this.state = 'B'
-                    }else{
-                        this.write(1), this.slot--, this.state = 'E'
-                    }
-                    break;
-                case 'B':
-                    if(!current){
-                        this.write(1), this.slot++, this.state = 'C'
-                    }else{
-                        this.write(1), this.slot++, this.state = 'F'
-                    }
-                    break;
-                case 'C':
-                    if(!current){
-                        this.write(1), this.slot--, this.state = 'D'
-                    }else{
-                        this.write(0), this.slot++, this.state = 'B'
-                    }
-                    break;
-                case 'D':
-                    if(!current){
-                        this.write(1), this.slot++, this.state = 'E'
-                    }else{
-                        this.write(0), this.slot--, this.state = 'C'
-                    }    
-                    break;
-                case 'E':
-                    if(!current){
-                        this.write(1), this.slot--, this.state = 'A'
-                    }else{
-                        this.write(0), this.slot++, this.state = 'D'
-                    }
-                    break;
-                case 'F':
-                    if(!current){
-                        this.write(1), this.slot++, this.state = 'A'
-                    }else{
-                        this.write(1), this.slot++, this.state = 'C'
-                    }
-                    break;
-            }
-    
-            this.count--
+    while(count > 0){
+        currentValue = tape[cursorIndex];
+        
+        switch(state){
+            case 'A':
+                tape[cursorIndex] = 1
+ 
+                if(!currentValue){
+                    cursorIndex++
+                    state = 'B'
+                }else{
+                    cursorIndex--
+                    state = 'E'
+                }
+                break;
+            case 'B':
+                tape[cursorIndex] = 1;
+                
+                if(!currentValue){
+                    cursorIndex++
+                    state = 'C'
+                }else{
+                    cursorIndex++
+                    state = 'F'
+                }
+                break;
+            case 'C':
+                if(!currentValue){
+                    tape[cursorIndex] = 1
+                    cursorIndex--
+                    state = 'D'
+                }
+                else{
+                    tape[cursorIndex] = 0
+                    cursorIndex++
+                    state = 'B'
+                }
+                break;
+            case 'D':
+                if(!currentValue){
+                    tape[cursorIndex] = 1
+                    cursorIndex++
+                    state = 'E'
+                }
+                else{
+                    tape[cursorIndex] = 0
+                    cursorIndex--
+                    state = 'C'
+                }            
+                break;
+            case 'E':
+                if(!currentValue){
+                    tape[cursorIndex] = 1
+                    cursorIndex--
+                    state = 'A'
+                }
+                else{
+                    tape[cursorIndex] = 0
+                    cursorIndex++
+                    state = 'D'
+                }
+                break;
+            case 'F':
+                tape[cursorIndex] = 1
+                cursorIndex++
+
+                if(!currentValue){
+                    state = 'A'
+                }
+                else{
+                    state = 'C'
+                }
+                break;
         }
-        
-        return this.checksum            
-        
+
+        count--
     }
+
+    for(let key in tape){
+        if(key < 0){
+            tape.unshift(tape[key])
+            delete tape[key]
+        }
+    }
+
+    return tape
 }
 
-function trimTape(tape, firstIndex, lastIndex){
-    return tape.slice(firstIndex, lastIndex + 1)
-}
+const checksum = (a) => a.reduce((a, b) => a + b)
 
-let machine = new turingMachine(12459852)
-console.log(machine.run())
+console.log(checksum(turingMachine(12459852)))
